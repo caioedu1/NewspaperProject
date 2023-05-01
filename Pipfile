@@ -11,6 +11,7 @@ bootstrap4 = "*"
 sendgrid = "*"
 psycopg2 = "*"
 gunicorn = "*"
+whitenoise = "*"
 
 [dev-packages]
 
