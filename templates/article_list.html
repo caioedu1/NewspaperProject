@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% load static %}
+
+<head>
+    <title>Articles</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'articles/css/articles_style.css' %}">
+</head>
+<body>
+    {% block title %}Articles{% endblock title %}
+
+    {% block content %}
+        <form method="get" action="{% url 'article_list' %}">
+            <input type="text" name="search" placeholder="Pesquisar...">
+            <button type="submit">Pesquisar</button>
+        </form>
+        {% if QuerySet %}
+        <ul>
+        {% for result in QuerySet %}
+            <li>{{ QuerySet.title }}</li>
+        {% endfor %}
+        </ul>
+        {% else %}
+            <p>Nenhum resultado encontrado.</p>
+        {% endif %}
+
+        {% for article in object_list %}
+            <div class="card">
+                <div class="card-header">
+                    <span class="articles_titles">{{ article.title }}</span>
+                    <span class="text-muted">by {{ article.author }} | {{ article.date }}</span>
+                </div>
+                <div class="card-body">
+                    <p>{{ article.body }}</p>
+                    <!-- Changes start here! -->
+                    <a href="{% url 'article_edit' article.pk %}">Edit</a> |
+                    <a href="{% url 'article_delete' article.pk %}">Delete</a> |
+                    <a href="{% url 'articles_comments' article.id %}">Commments</a>
+                    
+                </div>
+                <div class="card-footer">
+                    {% for comment in article.comments.all %}
+                        <p>
+                            <span class="font-weight-bold">{{ comment.author }} &middot;</span>
+                            {{ comment }}
+                        </p>
+                    {% endfor %}
+                </div>
+            </div>
+            <br />
+        {% endfor %}
+    {% endblock content %}
+</body>
+
+
+
